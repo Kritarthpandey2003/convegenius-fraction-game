@@ -1,6 +1,6 @@
 # Interactive Fraction Game 🎮
 
-**[🚀 Play the Live Game Here!](https://convegenius-fraction-game.vercel.app/)**
+Live Playable Game: https://convegenius-fraction-game.vercel.app/
 
 An interactive, web-based educational game designed to help students learn fractions. Built as an assignment for the Product Intern role at ConveGenius.AI.
 

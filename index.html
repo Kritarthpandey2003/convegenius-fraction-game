@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Fraction Game</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for typography similar to the mockup -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Three.js and GSAP via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h2>Create this fraction</h2>
+            <div class="target-fraction">
+                <span id="target-numerator">2</span>
+                <hr>
+                <span id="target-denominator">6</span>
+            </div>
+        </div>
+
+        <div class="scene-container" id="scene-container">
+            <!-- Three.js Canvas will be injected here -->
+        </div>
+
+        <div class="controls">
+            <button id="btn-remove" class="btn btn-remove">
+                <span class="icon">-</span> PIECE
+            </button>
+            <button id="btn-add" class="btn btn-add">
+                <span class="icon">+</span> PIECE
+            </button>
+        </div>
+
+        <div id="feedback-overlay" class="feedback-overlay hidden">
+            <div class="feedback-content">
+                <h1 id="feedback-message">Great Job!</h1>
+                <button id="btn-next" class="btn btn-next">Next Level</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application scripts -->
+    <script src="audio.js"></script>
+    <script src="scene.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

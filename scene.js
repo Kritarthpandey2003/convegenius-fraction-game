@@ -8,7 +8,7 @@ class FractionScene {
         // Setup Camera
         const aspect = this.container.clientWidth / this.container.clientHeight;
         this.camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
-        this.camera.position.z = 5;
+        this.camera.position.z = aspect < 1 ? (5 / aspect) * 0.8 : 5;
         this.camera.position.y = -0.5; // Slight angle
         this.camera.lookAt(0, 0, 0);
 
@@ -119,7 +119,12 @@ class FractionScene {
         if (!this.container) return;
         const width = this.container.clientWidth;
         const height = this.container.clientHeight;
-        this.camera.aspect = width / height;
+        const aspect = width / height;
+        this.camera.aspect = aspect;
+        
+        // Ensure the 3D model is fully visible on narrow screens
+        this.camera.position.z = aspect < 1 ? (5 / aspect) * 0.8 : 5;
+        
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(width, height);
     }

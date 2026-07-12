@@ -1,26 +1,24 @@
 // main.js - Core game logic
 
-// Game Levels configuration
-const levels = [
-    { num: 2, den: 6 },
-    { num: 3, den: 4 },
-    { num: 1, den: 3 },
-    { num: 5, den: 8 },
-    { num: 4, den: 5 },
-    { num: 3, den: 6 },
-    { num: 7, den: 10 },
-    { num: 2, den: 5 },
-    { num: 5, den: 12 },
-    { num: 8, den: 9 }
-];
+// Procedural Level Generator for infinite gameplay
+function generateRandomLevel(levelIndex) {
+    // Difficulty increases as level goes up (max denominator 12)
+    const maxDenom = Math.min(4 + Math.floor(levelIndex / 2), 12);
+    const minDenom = 2;
+    const den = Math.floor(Math.random() * (maxDenom - minDenom + 1)) + minDenom;
+    const num = Math.floor(Math.random() * (den - 1)) + 1; // 1 to (den-1)
+    return { num, den };
+}
 
 let currentLevelIndex = 0;
 let currentShadedCount = 0;
+let currentLevelData = null;
 let gameScene = null;
 
 // DOM Elements
 const targetNumEl = document.getElementById('target-numerator');
 const targetDenEl = document.getElementById('target-denominator');
+const targetFractionContainer = document.querySelector('.target-fraction'); // For animations
 const btnAdd = document.getElementById('btn-add');
 const btnRemove = document.getElementById('btn-remove');
 const feedbackOverlay = document.getElementById('feedback-overlay');
@@ -51,41 +49,38 @@ function initGame() {
 }
 
 function loadLevel(index) {
-    if (index >= levels.length) {
-        // Game Complete
-        document.getElementById('feedback-message').innerText = "Game Complete!";
-        btnNext.style.display = 'none';
-        feedbackOverlay.classList.remove('hidden');
-        soundManager.playSuccess();
-        return;
-    }
-
-    const levelData = levels[index];
+    currentLevelData = generateRandomLevel(index);
     currentShadedCount = 0;
 
     // Update UI
-    targetNumEl.innerText = levelData.num;
-    targetDenEl.innerText = levelData.den;
+    targetNumEl.innerText = currentLevelData.num;
+    targetDenEl.innerText = currentLevelData.den;
     levelBadgeEl.innerText = `Level ${index + 1} 🌟`;
     
     // Reset Overlays
     feedbackOverlay.classList.add('hidden');
 
     // Setup 3D Scene
-    gameScene.createFractionModel(levelData.den);
+    gameScene.createFractionModel(currentLevelData.den);
 
     // Speak Instruction
     setTimeout(() => {
-        voiceAssistant.speak(`Create the fraction ${levelData.num} over ${levelData.den}`);
+        voiceAssistant.speak(`Create the fraction ${currentLevelData.num} over ${currentLevelData.den}`);
     }, 1000); // Slight delay for better UX
+    
+    // Fun pop animation for the fraction text
+    targetFractionContainer.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        targetFractionContainer.style.transform = 'scale(1)';
+    }, 200);
 }
 
 function onAddPiece() {
-    const levelData = levels[currentLevelIndex];
-    if (currentShadedCount < levelData.den) {
+    if (currentShadedCount < currentLevelData.den) {
         currentShadedCount++;
-        gameScene.setShadedPieces(currentShadedCount);
-        soundManager.playAdd();
+        gameScene.updateFraction(currentShadedCount, currentLevelData.den);
+        soundManager.playClick();
+        bumpFractionUI();
         checkWinCondition();
     }
 }
@@ -93,14 +88,21 @@ function onAddPiece() {
 function onRemovePiece() {
     if (currentShadedCount > 0) {
         currentShadedCount--;
-        gameScene.setShadedPieces(currentShadedCount);
-        soundManager.playRemove();
+        gameScene.updateFraction(currentShadedCount, currentLevelData.den);
+        soundManager.playClick();
+        bumpFractionUI();
     }
 }
 
+function bumpFractionUI() {
+    targetFractionContainer.style.transform = 'scale(1.1)';
+    setTimeout(() => {
+        targetFractionContainer.style.transform = 'scale(1)';
+    }, 150);
+}
+
 function checkWinCondition() {
-    const levelData = levels[currentLevelIndex];
-    if (currentShadedCount === levelData.num) {
+    if (currentShadedCount === currentLevelData.num) {
         // Correct answer!
         setTimeout(() => {
             soundManager.playSuccess();

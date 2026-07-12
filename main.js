@@ -78,7 +78,7 @@ function loadLevel(index) {
 function onAddPiece() {
     if (currentShadedCount < currentLevelData.den) {
         currentShadedCount++;
-        gameScene.updateFraction(currentShadedCount, currentLevelData.den);
+        gameScene.setShadedPieces(currentShadedCount);
         soundManager.playClick();
         bumpFractionUI();
         checkWinCondition();
@@ -88,7 +88,7 @@ function onAddPiece() {
 function onRemovePiece() {
     if (currentShadedCount > 0) {
         currentShadedCount--;
-        gameScene.updateFraction(currentShadedCount, currentLevelData.den);
+        gameScene.setShadedPieces(currentShadedCount);
         soundManager.playClick();
         bumpFractionUI();
     }

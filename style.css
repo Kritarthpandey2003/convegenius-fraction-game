@@ -15,7 +15,7 @@
 
 body {
     font-family: 'Fredoka', 'Montserrat', sans-serif;
-    background: linear-gradient(-45deg, #f0f8ff, #e6f2ff, #ffffff, #f9f9f9);
+    background: linear-gradient(-45deg, #FF9A9E, #FECFEF, #A1C4FD, #C2E9FB);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
     color: var(--text-color);
@@ -51,9 +51,10 @@ body {
     position: absolute;
     bottom: -50px;
     background: transparent;
-    color: rgba(59, 161, 236, 0.15); /* Faint primary color */
+    color: rgba(255, 255, 255, 0.6); /* Brighter white for contrast */
     font-size: 3rem;
     font-weight: 700;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
     animation: floatUp calc(5s * var(--i)) linear infinite;
     left: calc(10% * var(--i));
 }
@@ -128,15 +129,23 @@ body {
     font-weight: 700;
     line-height: 1.1;
     transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: #FFCA3A; /* Bright Yellow */
+    text-shadow: 
+        -2px -2px 0 #4a4a4a,  
+         2px -2px 0 #4a4a4a,
+        -2px  2px 0 #4a4a4a,
+         2px  2px 0 #4a4a4a,
+         0px  5px 0px rgba(0,0,0,0.2);
 }
 
 .target-fraction hr {
     width: 100%;
     border: none;
-    height: 4px;
-    background-color: var(--fraction-line-color);
+    height: 6px;
+    background-color: #4a4a4a; /* Matches the text border */
     margin: 0.2rem 0;
-    border-radius: 2px;
+    border-radius: 3px;
+    box-shadow: 0px 3px 0px rgba(0,0,0,0.2);
 }
 
 .scene-container {
@@ -170,24 +179,44 @@ body {
     border: none;
     border-radius: 12px;
     padding: 0.8rem 1.5rem;
-    font-size: 1rem;
+    font-size: 1.1rem; /* Slightly larger font */
     font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     transition: transform 0.1s, background-color 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 0 var(--primary-dark);
+    box-shadow: 0 5px 0 var(--primary-dark);
+}
+
+.btn-add {
+    background-color: #8AC926;
+    box-shadow: 0 5px 0 #5bb22e;
+}
+.btn-add:hover {
+    box-shadow: 0 4px 15px rgba(138, 201, 38, 0.4), 0 5px 0 #5bb22e;
+}
+.btn-add:active {
+    box-shadow: 0 0px 0 #5bb22e;
+}
+
+.btn-remove {
+    background-color: #FF595E;
+    box-shadow: 0 5px 0 #c7363a;
+}
+.btn-remove:hover {
+    box-shadow: 0 4px 15px rgba(255, 89, 94, 0.4), 0 5px 0 #c7363a;
+}
+.btn-remove:active {
+    box-shadow: 0 0px 0 #c7363a;
 }
 
 .btn:hover {
-    box-shadow: 0 4px 15px rgba(59, 161, 236, 0.4), 0 4px 0 var(--primary-dark);
     transform: translateY(-2px);
 }
 
 .btn:active {
-    transform: translateY(4px);
-    box-shadow: 0 0px 0 var(--primary-dark);
+    transform: translateY(5px);
 }
 
 /* Voice Assistant Button */

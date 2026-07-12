@@ -28,7 +28,7 @@ class FractionScene {
 
         // Materials matching the mockup
         this.unshadedMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0xe0e0e0, // Light grey
+            color: 0xfff9e6, // Soft cream white
             roughness: 0.4,
             metalness: 0.1
         });
@@ -54,6 +54,10 @@ class FractionScene {
 
     createFractionModel(denominator) {
         this.denominator = denominator;
+        
+        // Pick a random vibrant color for this level
+        const vibrantColors = [0xFF595E, 0xFFCA3A, 0x8AC926, 0x1982C4, 0x6A4C93, 0xFF006E, 0x00F5D4];
+        this.shadedMaterial.color.setHex(vibrantColors[Math.floor(Math.random() * vibrantColors.length)]);
         
         // Remove old pieces
         this.pieces.forEach(p => this.scene.remove(p));

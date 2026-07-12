@@ -46,6 +46,11 @@ function initGame() {
 
     // Start Level 1
     loadLevel(currentLevelIndex);
+
+    // Initial Entry Animation
+    gsap.from(".header", { y: -50, opacity: 0, duration: 1, ease: "bounce.out" });
+    gsap.from(".controls .btn", { y: 50, opacity: 0, duration: 0.8, stagger: 0.2, ease: "back.out(1.7)" });
+    gsap.from(".voice-btn", { scale: 0, rotation: -180, duration: 0.6, delay: 0.5, ease: "back.out(1.7)" });
 }
 
 function loadLevel(index) {
@@ -108,6 +113,12 @@ function checkWinCondition() {
             soundManager.playSuccess();
             voiceAssistant.speak("Great Job!");
             feedbackOverlay.classList.remove('hidden');
+            
+            // Pop the overlay in with a fun elastic animation
+            gsap.fromTo(".feedback-content", 
+                { scale: 0, rotation: -10 }, 
+                { scale: 1, rotation: 0, duration: 0.8, ease: "elastic.out(1, 0.5)" }
+            );
             
             // Confetti effect using simple DOM elements
             createConfetti();

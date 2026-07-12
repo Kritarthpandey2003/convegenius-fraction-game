@@ -35,6 +35,46 @@ body {
     100% { background-position: 0% 50%; }
 }
 
+/* Floating Background Symbols */
+.floating-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.floating-bg span {
+    position: absolute;
+    bottom: -50px;
+    background: transparent;
+    color: rgba(59, 161, 236, 0.15); /* Faint primary color */
+    font-size: 3rem;
+    font-weight: 700;
+    animation: floatUp calc(5s * var(--i)) linear infinite;
+    left: calc(10% * var(--i));
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
 .game-container {
     width: 100%;
     max-width: 400px;

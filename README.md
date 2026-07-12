@@ -7,7 +7,7 @@ An interactive, web-based educational game designed to help students learn fract
 ## Tech Stack
 * **HTML5, CSS3, Vanilla JavaScript**: Clean, zero-dependency core logic.
 * **Three.js**: Premium 3D visualization of the fraction models.
-* **Web Audio API**: Procedurally generated sound effects.
+* **Web Audio & Web Speech APIs**: Procedurally generated sound effects and an integrated **AI Voice Assistant** for hands-free gameplay and text-to-speech instructions.
 
 ## Deliverables Included
 * **Source Code**: Fully commented and organized in this repository.

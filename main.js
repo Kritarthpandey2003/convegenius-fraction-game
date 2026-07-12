@@ -20,6 +20,7 @@ const btnAdd = document.getElementById('btn-add');
 const btnRemove = document.getElementById('btn-remove');
 const feedbackOverlay = document.getElementById('feedback-overlay');
 const btnNext = document.getElementById('btn-next');
+const btnVoice = document.getElementById('btn-voice'); // NEW Voice Button
 
 function initGame() {
     // Initialize Three.js Scene
@@ -29,6 +30,15 @@ function initGame() {
     btnAdd.addEventListener('click', onAddPiece);
     btnRemove.addEventListener('click', onRemovePiece);
     btnNext.addEventListener('click', loadNextLevel);
+    
+    // Bind Voice Assistant Toggle
+    btnVoice.addEventListener('click', () => {
+        voiceAssistant.toggleListening(btnVoice, {
+            onAdd: onAddPiece,
+            onRemove: onRemovePiece,
+            onNext: () => { if (!feedbackOverlay.classList.contains('hidden')) loadNextLevel(); }
+        });
+    });
 
     // Start Level 1
     loadLevel(currentLevelIndex);
@@ -56,6 +66,11 @@ function loadLevel(index) {
 
     // Setup 3D Scene
     gameScene.createFractionModel(levelData.den);
+
+    // Speak Instruction
+    setTimeout(() => {
+        voiceAssistant.speak(`Create the fraction ${levelData.num} over ${levelData.den}`);
+    }, 1000); // Slight delay for better UX
 }
 
 function onAddPiece() {
@@ -82,6 +97,7 @@ function checkWinCondition() {
         // Correct answer!
         setTimeout(() => {
             soundManager.playSuccess();
+            voiceAssistant.speak("Great Job!");
             feedbackOverlay.classList.remove('hidden');
             
             // Confetti effect using simple DOM elements

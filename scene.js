@@ -80,6 +80,11 @@ class FractionScene {
 
             const mesh = new THREE.Mesh(geometry, this.unshadedMaterial);
             
+            // Add cartoon outline to highlight the pieces
+            const edges = new THREE.EdgesGeometry(geometry);
+            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x333333, linewidth: 3 }));
+            mesh.add(line);
+            
             // Start scaled down for entry animation
             mesh.scale.set(0, 0, 0);
             

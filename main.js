@@ -50,7 +50,7 @@ function initGame() {
     // Initial Entry Animation
     gsap.from(".header", { y: -50, opacity: 0, duration: 1, ease: "bounce.out", clearProps: "all" });
     gsap.from(".controls", { y: 50, opacity: 0, duration: 0.8, delay: 0.2, ease: "back.out(1.7)", clearProps: "all" });
-    gsap.from(".voice-btn", { scale: 0, rotation: -180, duration: 0.6, delay: 0.5, ease: "back.out(1.7)", clearProps: "all" });
+    gsap.from(".mascot-container", { scale: 0, rotation: -180, duration: 0.6, delay: 0.5, ease: "back.out(1.7)", clearProps: "all" });
 }
 
 function loadLevel(index) {

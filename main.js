@@ -6,7 +6,12 @@ const levels = [
     { num: 3, den: 4 },
     { num: 1, den: 3 },
     { num: 5, den: 8 },
-    { num: 4, den: 5 }
+    { num: 4, den: 5 },
+    { num: 3, den: 6 },
+    { num: 7, den: 10 },
+    { num: 2, den: 5 },
+    { num: 5, den: 12 },
+    { num: 8, den: 9 }
 ];
 
 let currentLevelIndex = 0;
@@ -21,6 +26,7 @@ const btnRemove = document.getElementById('btn-remove');
 const feedbackOverlay = document.getElementById('feedback-overlay');
 const btnNext = document.getElementById('btn-next');
 const btnVoice = document.getElementById('btn-voice'); // NEW Voice Button
+const levelBadgeEl = document.getElementById('level-badge'); // Level Badge
 
 function initGame() {
     // Initialize Three.js Scene
@@ -60,6 +66,7 @@ function loadLevel(index) {
     // Update UI
     targetNumEl.innerText = levelData.num;
     targetDenEl.innerText = levelData.den;
+    levelBadgeEl.innerText = `Level ${index + 1} 🌟`;
     
     // Reset Overlays
     feedbackOverlay.classList.add('hidden');

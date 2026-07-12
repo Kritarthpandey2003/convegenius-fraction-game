@@ -106,12 +106,26 @@ function bumpFractionUI() {
     }, 150);
 }
 
+const praiseMessages = [
+    "Great Job!",
+    "Math Genius!",
+    "Super Star!",
+    "You Did It!",
+    "Spectacular!",
+    "Amazing!",
+    "Way to Go!"
+];
+
 function checkWinCondition() {
     if (currentShadedCount === currentLevelData.num) {
         // Correct answer!
         setTimeout(() => {
+            const randomPraise = praiseMessages[Math.floor(Math.random() * praiseMessages.length)];
+            
+            document.getElementById('feedback-message').innerText = randomPraise;
+            
             soundManager.playSuccess();
-            voiceAssistant.speak("Great Job!");
+            voiceAssistant.speak(randomPraise);
             feedbackOverlay.classList.remove('hidden');
             
             // Pop the overlay in with a fun elastic animation
@@ -120,8 +134,8 @@ function checkWinCondition() {
                 { scale: 1, rotation: 0, duration: 0.8, ease: "elastic.out(1, 0.5)" }
             );
             
-            // Confetti effect using simple DOM elements
-            createConfetti();
+            // Trigger spectacular canvas-confetti
+            fireConfetti();
         }, 300);
     }
 }
@@ -131,30 +145,32 @@ function loadNextLevel() {
     loadLevel(currentLevelIndex);
 }
 
-// Simple Confetti Implementation
-function createConfetti() {
-    for (let i = 0; i < 50; i++) {
-        const confetti = document.createElement('div');
-        confetti.style.position = 'absolute';
-        confetti.style.width = '10px';
-        confetti.style.height = '10px';
-        confetti.style.backgroundColor = ['#ff0', '#f0f', '#0ff', '#0f0', '#f00'][Math.floor(Math.random() * 5)];
-        confetti.style.left = Math.random() * 100 + 'vw';
-        confetti.style.top = '-10px';
-        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-        confetti.style.zIndex = '1000';
-        document.body.appendChild(confetti);
+// Epic Confetti Implementation using canvas-confetti
+function fireConfetti() {
+    if (typeof confetti === 'function') {
+        const duration = 3000;
+        const end = Date.now() + duration;
 
-        gsap.to(confetti, {
-            y: window.innerHeight + 10,
-            x: '+=' + (Math.random() * 200 - 100),
-            rotation: Math.random() * 360,
-            duration: 1 + Math.random() * 2,
-            ease: 'power1.out',
-            onComplete: () => {
-                confetti.remove();
+        (function frame() {
+            confetti({
+                particleCount: 5,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0, y: 0.8 },
+                colors: ['#FF595E', '#FFCA3A', '#8AC926', '#1982C4', '#6A4C93']
+            });
+            confetti({
+                particleCount: 5,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1, y: 0.8 },
+                colors: ['#FF595E', '#FFCA3A', '#8AC926', '#1982C4', '#6A4C93']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
             }
-        });
+        }());
     }
 }
 

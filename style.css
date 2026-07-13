@@ -96,17 +96,36 @@ body {
     z-index: 10;
 }
 
-.level-badge {
-    background-color: #ff9800;
+.header-badges {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.level-badge, .timer-badge {
     color: white;
     padding: 0.4rem 1.2rem;
     border-radius: 20px;
     font-size: 1rem;
     font-weight: 700;
-    display: inline-block;
-    margin-bottom: 1rem;
+}
+
+.level-badge {
+    background-color: #ff9800;
     box-shadow: 0 3px 0 #db8300;
     animation: bounce 2s infinite;
+}
+
+.timer-badge {
+    background-color: #FF595E;
+    box-shadow: 0 3px 0 #c7363a;
+    transition: all 0.3s ease;
+}
+
+.timer-badge.urgent {
+    animation: pulse 1s infinite, bounce 0.5s infinite;
+    background-color: #d90429;
 }
 
 @keyframes bounce {

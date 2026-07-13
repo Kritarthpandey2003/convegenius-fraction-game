@@ -14,6 +14,8 @@ let currentLevelIndex = 0;
 let currentShadedCount = 0;
 let currentLevelData = null;
 let gameScene = null;
+let levelTimer = null;
+let timeLeft = 15;
 
 // DOM Elements
 const targetNumEl = document.getElementById('target-numerator');
@@ -25,6 +27,7 @@ const feedbackOverlay = document.getElementById('feedback-overlay');
 const btnNext = document.getElementById('btn-next');
 const btnVoice = document.getElementById('btn-voice'); // NEW Voice Button
 const levelBadgeEl = document.getElementById('level-badge'); // Level Badge
+const timerDisplayEl = document.getElementById('timer-display'); // Timer Display
 
 function initGame() {
     // Initialize Three.js Scene
@@ -62,8 +65,28 @@ function loadLevel(index) {
     targetDenEl.innerText = currentLevelData.den;
     levelBadgeEl.innerText = `Level ${index + 1} 🌟`;
     
+    // Reset Timer
+    clearInterval(levelTimer);
+    timeLeft = 15;
+    timerDisplayEl.innerText = `⏳ ${timeLeft}s`;
+    timerDisplayEl.classList.remove('urgent');
+    
+    levelTimer = setInterval(() => {
+        timeLeft--;
+        timerDisplayEl.innerText = `⏳ ${timeLeft}s`;
+        if (timeLeft <= 5) {
+            timerDisplayEl.classList.add('urgent');
+        }
+        if (timeLeft <= 0) {
+            clearInterval(levelTimer);
+            handleTimeUp();
+        }
+    }, 1000);
+    
     // Reset Overlays
     feedbackOverlay.classList.add('hidden');
+    document.getElementById('reward-icon').innerText = "🏆";
+    document.getElementById('btn-next').innerText = "Next Level";
 
     // Setup 3D Scene
     gameScene.createFractionModel(currentLevelData.den);
@@ -81,7 +104,7 @@ function loadLevel(index) {
 }
 
 function onAddPiece() {
-    if (currentShadedCount < currentLevelData.den) {
+    if (timeLeft > 0 && currentShadedCount < currentLevelData.den) {
         currentShadedCount++;
         gameScene.setShadedPieces(currentShadedCount);
         soundManager.playAdd();
@@ -91,7 +114,7 @@ function onAddPiece() {
 }
 
 function onRemovePiece() {
-    if (currentShadedCount > 0) {
+    if (timeLeft > 0 && currentShadedCount > 0) {
         currentShadedCount--;
         gameScene.setShadedPieces(currentShadedCount);
         soundManager.playRemove();
@@ -119,6 +142,8 @@ const praiseMessages = [
 function checkWinCondition() {
     if (currentShadedCount === currentLevelData.num) {
         // Correct answer!
+        clearInterval(levelTimer); // Stop the timer!
+        
         setTimeout(() => {
             const randomPraise = praiseMessages[Math.floor(Math.random() * praiseMessages.length)];
             
@@ -140,15 +165,32 @@ function checkWinCondition() {
     }
 }
 
+function handleTimeUp() {
+    soundManager.playRemove();
+    voiceAssistant.speak("Oh no, time is up! Try again.");
+    
+    document.getElementById('feedback-message').innerText = "Time's Up!";
+    document.getElementById('reward-icon').innerText = "⏰";
+    document.getElementById('btn-next').innerText = "Try Again";
+    
+    feedbackOverlay.classList.remove('hidden');
+    gsap.fromTo(".feedback-content", 
+        { scale: 0, rotation: -10 }, 
+        { scale: 1, rotation: 0, duration: 0.8, ease: "elastic.out(1, 0.5)" }
+    );
+}
+
 function loadNextLevel() {
-    currentLevelIndex++;
+    if (document.getElementById('btn-next').innerText === "Next Level") {
+        currentLevelIndex++;
+    }
     loadLevel(currentLevelIndex);
 }
 
 // Epic Confetti Implementation using canvas-confetti
 function fireConfetti() {
     if (typeof confetti === 'function') {
-        const duration = 3000;
+        const duration = 1500; // Reduced from 3000ms as requested
         const end = Date.now() + duration;
 
         (function frame() {
